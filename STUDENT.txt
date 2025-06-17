@@ -1,0 +1,2 @@
+Nama: [Nama kamu]
+URL Deploy: https://[deploy-url].netlify.app

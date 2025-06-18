@@ -1,5 +1,3 @@
-// src/scripts/main.js
-
 import '../assets/styles.css';
 import { router } from './router.js';
 import { renderNavigation } from './view/navigation-view.js';
@@ -11,26 +9,27 @@ import storyView from './view/storyView.js';
 const { renderStories } = storyView;
 
 /**
- * Fungsi untuk memuat halaman utama dan render cerita
+ * Load and render stories on the homepage.
  */
 async function loadHomePage() {
   try {
     const stories = await getStories();
     await Promise.all(stories.map(story => idbStory.put(story)));
     renderStories(stories);
-  } catch (err) {
-    console.warn('⚠️ Fetch failed. Loading from cache...', err);
-    const cached = await idbStory.getAll();
-    if (cached.length > 0) {
-      renderStories(cached);
+  } catch (error) {
+    console.warn('⚠️ Failed to fetch stories. Trying to load from cache...', error);
+    const cachedStories = await idbStory.getAll();
+
+    if (cachedStories.length > 0) {
+      renderStories(cachedStories);
     } else {
-      console.error('❌ No cached stories found.');
+      console.error('❌ No cached stories available.');
     }
   }
 }
 
 /**
- * Perbarui tampilan berdasarkan hash route
+ * Update the view based on current route and auth status.
  */
 function updateView() {
   router();
@@ -46,41 +45,46 @@ function updateView() {
 }
 
 /**
- * Inisialisasi aplikasi
+ * Initialize the app based on auth and routing.
  */
 function init() {
   const token = localStorage.getItem('token');
   const currentHash = window.location.hash;
 
-  if (!token && currentHash !== '#/login' && currentHash !== '#/register') {
+  const isAuthPage = currentHash === '#/login' || currentHash === '#/register';
+
+  if (!token && !isAuthPage) {
     window.location.hash = '#/login';
   } else {
     updateView();
   }
 }
 
-// Daftarkan Service Worker dan jalankan Push Notification
+/**
+ * Register the service worker and initialize push notifications.
+ */
 window.addEventListener('load', () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then((registration) => {
-        console.log('✅ Service Worker Registered with scope:', registration.scope);
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(registration => {
+        console.log('✅ Service Worker registered with scope:', registration.scope);
       })
-      .catch((error) => {
-        console.error('❌ Service Worker Registration Failed:', error);
+      .catch(error => {
+        console.error('❌ Service Worker registration failed:', error);
       });
   } else {
-    console.warn('⚠️ Service Worker is not supported in this browser.');
+    console.warn('⚠️ This browser does not support Service Workers.');
   }
 
-  // Inisialisasi Push Notification jika fungsi tersedia
+  // Initialize push notifications (if available)
   if (typeof initPush === 'function') {
     initPush();
   }
 });
 
-// Perbarui tampilan saat hash berubah
+// Update the view on hash change (client-side routing)
 window.addEventListener('hashchange', updateView);
 
-// Jalankan init saat DOM siap
+// Initialize the app when DOM is fully loaded
 window.addEventListener('DOMContentLoaded', init);

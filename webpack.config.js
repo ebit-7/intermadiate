@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    clean: true, // bersihkan folder dist sebelum build baru
+    clean: true,
   },
   module: {
     rules: [
@@ -18,7 +18,21 @@ module.exports = {
       {
         test: /\.js$/i,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  useBuiltIns: 'usage',
+                  corejs: 3,
+                  targets: '> 0.25%, not dead',
+                },
+              ],
+            ],
+          },
+        },
       },
     ],
   },
@@ -29,10 +43,10 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'public/manifest.json', to: '' },         // ke root dist
-        { from: 'public/service-worker.js', to: '' },     // ke root dist
-        { from: 'public/assets/icons', to: 'assets/icons' }, // ke folder dist/assets/icons
-        { from: 'public/_redirects', to: '' },            // ke root dist
+        { from: 'public/manifest.json', to: '' },
+        { from: 'public/service-worker.js', to: '' },
+        { from: 'public/assets/icons', to: 'assets/icons' },
+        { from: 'public/_redirects', to: '' },
       ],
     }),
   ],
@@ -41,5 +55,5 @@ module.exports = {
     open: true,
     hot: true,
   },
-  mode: 'production', // pastikan mode production untuk build final
+  mode: 'production',
 };

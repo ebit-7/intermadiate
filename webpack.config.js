@@ -1,4 +1,3 @@
-// webpack.config.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -20,8 +19,8 @@ module.exports = {
         test: /\.js$/i,
         exclude: /node_modules/,
         use: ['babel-loader'],
-      }
-    ]
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -30,11 +29,12 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'public/manifest.json', to: 'manifest.json' },
-        { from: 'public/service-worker.js', to: 'service-worker.js' },
-        { from: 'public/assets/icons', to: 'assets/icons' },
+        { from: 'public/manifest.json', to: '' },           // langsung ke root dist
+        { from: 'public/service-worker.js', to: '' },       // langsung ke root dist
+        { from: 'public/assets/icons', to: 'assets/icons' },// folder icons tetap ke dalam dist/assets/icons
+        { from: 'public/_redirects', to: '' },              // file _redirects langsung ke root dist
       ],
-    })
+    }),
   ],
   devServer: {
     static: './dist',

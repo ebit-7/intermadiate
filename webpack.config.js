@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    clean: true,
+    clean: true, // bersihkan folder dist sebelum build baru
   },
   module: {
     rules: [
@@ -29,10 +29,10 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'public/manifest.json', to: '' },           // langsung ke root dist
-        { from: 'public/service-worker.js', to: '' },       // langsung ke root dist
-        { from: 'public/assets/icons', to: 'assets/icons' },// folder icons tetap ke dalam dist/assets/icons
-        { from: 'public/_redirects', to: '' },              // file _redirects langsung ke root dist
+        { from: 'public/manifest.json', to: '' },         // ke root dist
+        { from: 'public/service-worker.js', to: '' },     // ke root dist
+        { from: 'public/assets/icons', to: 'assets/icons' }, // ke folder dist/assets/icons
+        { from: 'public/_redirects', to: '' },            // ke root dist
       ],
     }),
   ],
@@ -41,5 +41,5 @@ module.exports = {
     open: true,
     hot: true,
   },
-  mode: 'development',
+  mode: 'production', // pastikan mode production untuk build final
 };

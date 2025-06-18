@@ -1,2 +1,1 @@
-Nama: [Nama kamu]
-URL Deploy: https://tugasebit.netlify.app/
+https://ebit.netlify.app/

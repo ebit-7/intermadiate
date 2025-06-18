@@ -7,13 +7,13 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    clean: true,
+    clean: true
   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.js$/i,
@@ -27,33 +27,32 @@ module.exports = {
                 {
                   useBuiltIns: 'usage',
                   corejs: 3,
-                  targets: '> 0.25%, not dead',
-                },
-              ],
-            ],
-          },
-        },
-      },
-    ],
+                  targets: '> 0.25%, not dead'
+                }
+              ]
+            ]
+          }
+        }
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-      inject: 'body',
+      inject: 'body'
     }),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'public/manifest.json', to: '' },
         { from: 'public/service-worker.js', to: '' },
-        { from: 'public/assets/icons', to: 'assets/icons' },
-        { from: 'public/_redirects', to: '' },
-      ],
-    }),
+        { from: 'public/assets/icons', to: 'assets/icons' }
+      ]
+    })
   ],
   devServer: {
     static: './dist',
     open: true,
-    hot: true,
+    hot: true
   },
-  mode: 'production',
+  mode: 'production'
 };

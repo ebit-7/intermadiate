@@ -1,6 +1,7 @@
 ├───public
 │   │   manifest.json
 │   │   service-worker.js
+│   │   _redirects
 │   │
 │   └───assets
 │       └───icons
@@ -29,7 +30,7 @@
         │   push-notification.js
         │   router.js
         │   view-transition.js
-        │
+        │   
         ├───api
         │       auth-api.js
         │       story-api.js

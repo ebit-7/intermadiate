@@ -1,1 +1,1 @@
-https://ebit.netlify.app/
+https://test-gamma-one-68.vercel.app/#/login
